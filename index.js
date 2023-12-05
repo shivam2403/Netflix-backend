@@ -27,7 +27,6 @@ app.use('/api/users',userRouter);
 app.use('/api/movies',movieRouter);
 app.use('/api/lists',listRouter);
 
-const port=8800;
-app.listen(port,()=>{
-    console.log('Server is listening at port '+port);
+app.listen(process.env.PORT,()=>{
+    console.log('Server is listening at port '+process.env.PORT);
 })
