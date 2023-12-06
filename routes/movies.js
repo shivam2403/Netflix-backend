@@ -1,9 +1,20 @@
 const router=require('express').Router();
 const Movie=require('../models/Movie');
 const verify = require('../verifyToken');
+const cors = require('cors');
+
+// Apply CORS middleware for the entire router
+router.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
 
 // CREATE
 router.post('/',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     if(req.user.isAdmin){
         const newMovie=new Movie(req.body);
 
@@ -20,6 +31,8 @@ router.post('/',verify,async(req,res)=>{
 
 // UPDATE
 router.put('/:id',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     if(req.user.isAdmin){
         try {
             const updatedMovie=await Movie.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
@@ -34,6 +47,8 @@ router.put('/:id',verify,async(req,res)=>{
 
 // DELETE
 router.delete('/:id',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     if(req.user.isAdmin){
         try {
             await Movie.findByIdAndDelete(req.params.id);
@@ -48,6 +63,8 @@ router.delete('/:id',verify,async(req,res)=>{
 
 // GET
 router.get('/find/:id',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
         try {
             const movie=await Movie.findById(req.params.id);
             return res.status(200).json(movie);
@@ -60,6 +77,8 @@ router.get('/find/:id',verify,async(req,res)=>{
 
 // GET RANDOM --> This is to be on homepage after every refresh we should see a new movie home page
 router.get('/random',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
         const type=req.query.type;// random?type=series or random?type=movie
         let movie;
         try {
@@ -85,6 +104,8 @@ router.get('/random',verify,async(req,res)=>{
 
 // GET ALL
 router.get('/',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     const query=req.query.new;
     if(req.user.isAdmin){
         try {
