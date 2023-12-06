@@ -2,9 +2,20 @@ const router = require("express").Router();
 const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const cors = require('cors');
+
+// Apply CORS middleware for the entire router
+router.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
 
 // REGISTER
 router.post("/register", async (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
@@ -23,6 +34,8 @@ router.post("/register", async (req, res) => {
 
 // LOGIN
 router.post("/login", async (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
