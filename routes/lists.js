@@ -1,9 +1,20 @@
 const router=require('express').Router();
 const List=require('../models/List');
 const verify = require('../verifyToken');
+const cors = require('cors');
+
+// Apply CORS middleware for the entire router
+router.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
 
 // CREATE
 router.post('/',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     if(req.user.isAdmin){
         const newList=new List(req.body);
 
@@ -20,6 +31,8 @@ router.post('/',verify,async(req,res)=>{
 
 // DELETE
 router.delete('/:id',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     if(req.user.isAdmin){
         try {
             await List.findByIdAndDelete(req.params.id);
@@ -34,6 +47,8 @@ router.delete('/:id',verify,async(req,res)=>{
 
 // GET
 router.get('/',verify,async(req,res)=>{
+    res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
     const typeQuery=req.query.type;
     const genreQuery=req.query.genre;
     let list=[];
